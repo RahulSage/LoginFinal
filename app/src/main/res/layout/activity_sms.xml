@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Sms">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:padding="5dp"
+            app:srcCompat="@drawable/medi" />
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="45dp"
+            android:ems="10"
+            android:hint="Enter your number"
+            android:inputType="phone" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:onClick="send_sms"
+            android:text="SEND SMS"
+            android:background="@drawable/btn_login"
+            tools:ignore="OnClick" />
+
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="OTP"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:layout_marginTop="30dp"/>
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/editText2"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal"
+
+
+            android:hapticFeedbackEnabled="false"
+            android:onClick="verify"
+            android:text="Verify"
+            android:background="@drawable/btn_login"
+
+            tools:ignore="OnClick" />
+    </LinearLayout>
+
+
+</RelativeLayout>
