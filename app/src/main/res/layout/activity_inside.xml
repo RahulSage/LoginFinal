@@ -19,4 +19,14 @@
         android:textAllCaps="true"
         android:textSize="20dp" />
 
+    <TextView
+        android:id="@+id/textViewEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="56dp"
+        android:text="TextView"
+        android:textSize="25sp" />
+
 </RelativeLayout>

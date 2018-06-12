@@ -3,8 +3,12 @@ package com.example.sage.loginfinal;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.app.ProgressDialog;
 import android.widget.TextView;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -23,6 +27,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class MainActivity extends AppCompatActivity{
+
+    private EditText inputEmail, inputPassword;
+    private Button btnLogin;
+    private ProgressDialog progressDialog;
 
     //a constant for detecting the login intent result
     private static final int RC_SIGN_IN = 234;
@@ -43,6 +51,63 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //first we intialized the FirebaseAuth object
+        mAuth = FirebaseAuth.getInstance();
+
+        if (mAuth.getCurrentUser() != null) {
+            startActivity(new Intent(MainActivity.this, Inside.class));
+            finish();
+        }
+
+        inputEmail = (EditText) findViewById(R.id.editTextEmail);
+        inputPassword = (EditText) findViewById(R.id.editTextPassword);
+        btnLogin = (Button) findViewById(R.id.login_btn);
+        progressDialog = new ProgressDialog(this);
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = inputEmail.getText().toString();
+                final String password = inputPassword.getText().toString();
+
+                if (TextUtils.isEmpty(email)) {
+                    Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(password)) {
+                    Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                progressDialog.setMessage("Logging in Please Wait...");
+                progressDialog.show();
+
+                //authenticate user
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                // If sign in fails, display a message to the user. If sign in succeeds
+                                // the auth state listener will be notified and logic to handle the
+                                // signed in user can be handled in the listener.
+
+                                progressDialog.dismiss();
+
+                               if (task.isSuccessful()) {
+
+                                   Intent intent = new Intent(MainActivity.this, Inside.class);
+                                   startActivity(intent);
+                                   finish();
+
+                                } else {
+                                   Toast.makeText(MainActivity.this, "Authentication Failed", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+
+                }
+        });
 
         //Calling Sign up activity
         textViewsign = (TextView) findViewById(R.id.signup_text);
@@ -67,9 +132,10 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+
+
         // Google sign in
-        //first we intialized the FirebaseAuth object
-        mAuth = FirebaseAuth.getInstance();
+
 
         //Then we need a GoogleSignInOptions object
         //And we need to build it as below
@@ -138,6 +204,7 @@ public class MainActivity extends AppCompatActivity{
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.dismiss();
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
@@ -167,6 +234,9 @@ public class MainActivity extends AppCompatActivity{
 
         //starting the activity for result
         startActivityForResult(signInIntent, RC_SIGN_IN);
+
+        progressDialog.setMessage("Logging in Please Wait...");
+        progressDialog.show();
     }
 
 
